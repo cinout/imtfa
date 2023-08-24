@@ -42,9 +42,10 @@ from detectron2.evaluation import (
     verify_results,
 )
 from detectron2.modeling import GeneralizedRCNNWithTTA
-import os
 
-os.environ["KMP_DUPLICATE_LIB_OK"] = "True"
+
+os.environ["KMP_DUPLICATE_LIB_OK"] = True
+# https://stackoverflow.com/questions/53014306/error-15-initializing-libiomp5-dylib-but-found-libiomp5-dylib-already-initial
 
 
 class Trainer(DefaultTrainer):
