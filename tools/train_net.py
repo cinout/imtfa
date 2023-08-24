@@ -24,7 +24,13 @@ import detectron2.utils.comm as comm
 from detectron2.checkpoint import DetectionCheckpointer
 from detectron2.config import get_cfg
 from detectron2.data import MetadataCatalog
-from detectron2.engine import DefaultTrainer, default_argument_parser, default_setup, hooks, launch
+from detectron2.engine import (
+    DefaultTrainer,
+    default_argument_parser,
+    default_setup,
+    hooks,
+    launch,
+)
 from detectron2.evaluation import (
     CityscapesEvaluator,
     COCOEvaluator,
@@ -36,6 +42,9 @@ from detectron2.evaluation import (
     verify_results,
 )
 from detectron2.modeling import GeneralizedRCNNWithTTA
+import os
+
+os.environ["KMP_DUPLICATE_LIB_OK"] = "True"
 
 
 class Trainer(DefaultTrainer):

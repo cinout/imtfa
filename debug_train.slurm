@@ -28,7 +28,6 @@ eval "$(conda shell.bash hook)"
 conda activate fct
 
 
-
 CUDA_VISIBLE_DEVICES=0,1,2,3 python tools/train_net.py --num-gpus 1 \
 	--config-file configs/COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_1x.yaml \
 	SOLVER.IMS_PER_BATCH 2 SOLVER.BASE_LR 0.0025
