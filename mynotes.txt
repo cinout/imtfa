@@ -1,0 +1,69 @@
+iMTFA's first training stage is: 
+- configs/coco-experiments/mask_rcnn_R_50_FPN_fc_fullclsag_base.yaml 
+
+iMTFA's second training stage is: 
+- configs/coco-experiments/mask_rcnn_R_50_FPN_ft_fullclsag_cos_bh_base.yaml
+
+1shot,5shot and 10_shot iMTFA configs for the NOVE/ALL classes are named as such:
+- configs/coco-experiments/mask_rcnn_R_50_FPN_fullclsag_metric_avg_cos_bh_normalized_{all/novel}_{shot_number}shot.yaml
+
+--------------------------
+For COCO-Split-2 in the paper, all experiments have an appended _split1 or are in the related split1 directory
+
+--------------------------
+Experiments on COCO2VOC (iMTFA, train on COCO, test on VOC test set)
+- configs/coco-experiments/mask_rcnn_R_50_FPN_fullclsag_metric_avg_cos_bh_normalized_novel_1shot_LIKE_FGN_CSSCALE_100_TEST_VOC.yaml
+
+
+Experiments for every shot are generated in the tools/run_experiments.py script. This is why there are no configs for the alpha value. These are generated automatically.
+
+--------------------------
+Models temporarily available here:
+- https://1drv.ms/u/s!Ako0GB-Fly5dgaI6a9w7V7qGexkiiA?e=UUzeYV
+
+
+----------Running----------------
+To run the training, the tools/run_train.py script is used. Run it with -h to get all available options
+
+-------------Inference Demo with Pre-trained Models-------------
+- pick model from https://github.com/facebookresearch/detectron2/blob/main/MODEL_ZOO.md
+We provide demo.py that is able to run builtin standard models. Run it with the below commands. We need to specify MODEL.WEIGHTS to a model from model zoo for evaluation. To save outputs to a directory (for images) or a file (for webcam or video), use --output.
+
+
+python demo/demo.py --config-file configs/COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x.yaml \
+  --input input1.jpg input2.jpg \
+  [--other-options]
+  --opts MODEL.WEIGHTS detectron2://COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_3x/137849600/model_final_f10217.pkl
+
+For details of the command line arguments, see demo.py -h or look at its source code
+
+------------Train--------------
+To train a model with "train_net.py", first setup the corresponding datasets following datasets/README.md, then run:
+- python tools/train_net.py --num-gpus 8 \
+	--config-file configs/COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_1x.yaml
+
+or on 1 GPU:
+- python tools/train_net.py \
+	--config-file configs/COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_1x.yaml \
+	SOLVER.IMS_PER_BATCH 2 SOLVER.BASE_LR 0.0025
+
+-------------Evaluate-------------
+
+To evaluate a model's performance, use
+- python tools/train_net.py \
+	--config-file configs/COCO-InstanceSegmentation/mask_rcnn_R_50_FPN_1x.yaml \
+	--eval-only MODEL.WEIGHTS /path/to/checkpoint_file
+
+For more options, see python tools/train_net.py -h.
+
+
+------------Dataset--------------
+Download and unzip the cocosplit folder here
+- https://drive.google.com/u/1/uc?id=12jGNdhdL8jz5YO8Gz5P-liNtY7eAz6Av&export=download
+
+setup a coco directory in datasets
+- download COCO2014 train + val and place them in trainval, similarly download COCO2014 test
+
+to generating the few-shots, see prepare_coco_few_shot.py for generating them manually, but the cocosplit folder provided above already includes the splits
+
+
