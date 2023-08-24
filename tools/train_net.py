@@ -43,6 +43,8 @@ from detectron2.evaluation import (
 )
 from detectron2.modeling import GeneralizedRCNNWithTTA
 
+os.environ["KMP_DUPLICATE_LIB_OK"] = "True"
+
 
 class Trainer(DefaultTrainer):
     """
